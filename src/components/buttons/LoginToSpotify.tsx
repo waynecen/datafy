@@ -1,18 +1,26 @@
-const endPoint = 'https://accounts.spotify.com/authorize'
+import { redirectToAuthCodeFlow } from '../../auth/authCodeWithPkce'
+import { MouseEvent } from 'react'
+
 const clientId = import.meta.env.VITE_CLIENT_ID
-const token = 'token'
+const clientSecret = import.meta.env.VITE_CLIENT_SECRET
 
-const handleClick = () => {}
+const handleClick = (e: MouseEvent<HTMLAnchorElement>) => {
+	e.preventDefault()
+	redirectToAuthCodeFlow(clientId)
 
-const LoginToSpotify = () => (
-	<a
-		href={`${endPoint}?client_id=${clientId}&redirect_uri=${
-			import.meta.env.VITE_REDIRECT_URI
-		}&response_type=${token}`}
-		onClick={handleClick}
-	>
-		Login to Spotify
-	</a>
-)
+	const authParameters = {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/x-www-form-urlencoded',
+		},
+		body: `grant_type=client_credentials&client_id=${clientId}&client_secret=${clientSecret}`,
+	}
+
+	fetch('https://accounts.spotify.com/api/token', authParameters)
+		.then(result => result.json())
+		.then(data => console.log(data.access_token))
+}
+
+const LoginToSpotify = () => <a onClick={handleClick}>Login to Spotify</a>
 
 export default LoginToSpotify

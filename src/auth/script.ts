@@ -1,8 +1,8 @@
 import { redirectToAuthCodeFlow, getAccessToken } from './authCodeWithPkce'
 
 const clientId = import.meta.env.VITE_CLIENT_ID
-const params = new URLSearchParams(window.location.search)
-const code = params.get('code')
+const urlParams = new URLSearchParams(window.location.search)
+const code = urlParams.get('code')
 
 if (!code) {
 	redirectToAuthCodeFlow(clientId)
