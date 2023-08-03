@@ -1,24 +1,22 @@
-import { redirectToAuthCodeFlow } from '../../auth/authCodeWithPkce'
+import {
+	redirectToAuthCodeFlow,
+	getAccessToken,
+} from '../../auth/authCodeWithPkce'
 import { MouseEvent } from 'react'
 
 const clientId = import.meta.env.VITE_CLIENT_ID
-const clientSecret = import.meta.env.VITE_CLIENT_SECRET
+// const clientSecret = import.meta.env.VITE_CLIENT_SECRET
+const params = new URLSearchParams(window.location.search)
+const code = params.get('code')
 
-const handleClick = (e: MouseEvent<HTMLAnchorElement>) => {
+const handleClick = async (e: MouseEvent<HTMLAnchorElement>) => {
 	e.preventDefault()
-	redirectToAuthCodeFlow(clientId)
-
-	const authParameters = {
-		method: 'POST',
-		headers: {
-			'Content-Type': 'application/x-www-form-urlencoded',
-		},
-		body: `grant_type=client_credentials&client_id=${clientId}&client_secret=${clientSecret}`,
+	if (!code) {
+		redirectToAuthCodeFlow(clientId)
+	} else {
+		const accessToken = await getAccessToken(clientId, code)
+		console.log(accessToken)
 	}
-
-	fetch('https://accounts.spotify.com/api/token', authParameters)
-		.then(result => result.json())
-		.then(data => console.log(data.access_token))
 }
 
 const LoginToSpotify = () => <a onClick={handleClick}>Login to Spotify</a>
