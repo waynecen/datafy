@@ -18,37 +18,57 @@ function App() {
 
 	// POST req for access token
 	useEffect(() => {
-		const authParameters = {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/x-www-form-urlencoded',
-			},
-			body: `grant_type=client_credentials&client_id=${clientId}&client_secret=${clientSecret}`,
+		const fetchAccessToken = async () => {
+			try {
+				const authParameters = {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/x-www-form-urlencoded',
+					},
+					body: `grant_type=client_credentials&client_id=${clientId}&client_secret=${clientSecret}`,
+				}
+
+				const response = await fetch(
+					'https://accounts.spotify.com/api/token',
+					authParameters
+				)
+				const data = await response.json()
+				setAccessToken(data.access_token)
+			} catch (error) {
+				console.error('Error fetching access token:', error)
+			}
 		}
 
-		fetch('https://accounts.spotify.com/api/token', authParameters)
-			.then(res => res.json())
-			.then(data => setAccessToken(data.access_token))
-			.catch(error => console.error('Cannot fetch access token:', error))
+		fetchAccessToken()
+	}, [])
 
-		// GET req for Artist Data
-		const params = {
-			method: 'GET',
-			headers: {
-				Authorization: `Bearer ${accessToken}`,
-				Accept: 'application/json',
-				'Content-Type': 'application/json',
-			},
-		}
-
+	// GET req for Artist Data
+	useEffect(() => {
 		const fetchArtist = async () => {
-			await fetch(
-				'https://api.spotify.com/v1/artists/7kOrrFIBIBc8uCu2zbxbLv?si=TkQubcPnTF2KrnN6TQdxrw',
-				params
-			)
-				.then(res => res.json())
-				.then(data => setArtistData(data))
+			try {
+				if (!accessToken) return
+
+				const params = {
+					method: 'GET',
+					headers: {
+						Authorization: `Bearer ${accessToken}`,
+						Accept: 'application/json',
+						'Content-Type': 'application/json',
+					},
+				}
+
+				const artistResponse = await fetch(
+					'https://api.spotify.com/v1/artists/7kOrrFIBIBc8uCu2zbxbLv?si=TkQubcPnTF2KrnN6TQdxrw',
+					params
+				)
+
+				const artistData = await artistResponse.json()
+				setArtistData(artistData)
+			} catch (error) {
+				console.error('Error fetching data:', error)
+			}
 		}
+
 		fetchArtist()
 	}, [accessToken])
 
