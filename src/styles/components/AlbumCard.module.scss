@@ -1,0 +1,26 @@
+@use "../variables" as *;
+
+.card {
+  display: flex;
+  flex-direction: row;
+  transition: background-color $ease-out;
+  padding: 8px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $bg-15;
+  }
+
+  img {
+    aspect-ratio: 1 / 1;
+    width: 96px;
+    border-radius: $radius-md;
+  }
+
+  .albumTitle {
+    font-size: small;
+    margin-top: -2px;
+    margin-left: 16px;
+    align-self: center;
+  }
+}

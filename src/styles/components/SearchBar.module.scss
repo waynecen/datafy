@@ -1,0 +1,44 @@
+@use "../variables" as *;
+
+.searchContainer {
+  position: relative;
+
+  .searchIconContainer {
+    position: absolute;
+    top: 70%;
+    left: 8px;
+    transform: translateY(-50%);
+    pointer-events: none;
+
+    .searchIcon {
+      color: $search-icon;
+    }
+  }
+
+  .searchBar {
+    border: none;
+    font-size: small;
+    background-color: $bg-15;
+    color: $default-text;
+    border-radius: 6px;
+    padding: 8px 8px 8px 16px;
+    padding-left: 32px;
+    width: fit-content;
+    outline: 1px transparent;
+    transition: outline, background-color $ease-out;
+
+    &::placeholder {
+      color: $placeholder-text;
+      opacity: 1;
+    }
+
+    &:focus {
+      outline: none;
+    }
+
+    &:hover {
+      outline: 1px solid $outline;
+      background-color: $bg-15-hover;
+    }
+  }
+}
