@@ -18,7 +18,7 @@
 .navBar {
   display: flex;
   padding: 12px;
-  margin-bottom: 12px;
+  margin-bottom: 8px;
   border-bottom: 1px $divider solid;
 
   .logo {
@@ -37,10 +37,10 @@
   width: 270px;
   margin-left: 8px;
   border-radius: $radius-lg;
-  background-color: rgb(20, 20, 20);
-
+  background-color: hsl(0, 0%, 8%);
   overflow-y: scroll;
   scrollbar-width: thin;
+  scrollbar-color: $bg-20 $bg-10;
 
   .subheader {
     font-size: large;
@@ -60,6 +60,11 @@
   flex-grow: 1;
   justify-content: center;
   align-items: center;
+  padding-right: 8px;
+  background-color: hsl(0, 0%, 8%);
+  margin-right: 8px;
+  border-top-right-radius: $radius-lg;
+  border-bottom-right-radius: $radius-lg;
 
   .placeholderText {
     font-size: small;
