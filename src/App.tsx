@@ -18,10 +18,17 @@ const clientSecret = import.meta.env.VITE_CLIENT_SECRET;
 function App() {
   const [accessToken, setAccessToken] = useState<string>("");
   const [albumData, setAlbumData] = useState<Album[]>([]);
+  const [selectedAlbum, setSelectedAlbum] = useState<number>();
 
   const handleAlbumData = (data: Album[]) => {
     setAlbumData(data);
   };
+
+  const handleAlbumSelection = (index: number) => {
+    setSelectedAlbum(index);
+    console.log(albumData);
+  };
+  // console.log(albumData);
 
   // POST req for access token
   useEffect(() => {
@@ -66,12 +73,21 @@ function App() {
                 image={album.images[0].url}
                 key={index}
                 name={album.name}
+                onClick={() => handleAlbumSelection(index)}
               />
             );
           })}
         </div>
         <div className="statContainer">
-          <h3 className="placeholderText">Select an album</h3>
+          {selectedAlbum >= 0 ? (
+            <div>
+              <h2>{albumData[selectedAlbum].name}</h2>
+              <p>{albumData[selectedAlbum].artists[0].name}</p>
+              <img src={selectedAlbum.coverImage} alt={selectedAlbum.name} />
+            </div>
+          ) : (
+            <h3 className="placeholderText">Select an album</h3>
+          )}
         </div>
       </div>
     </>
